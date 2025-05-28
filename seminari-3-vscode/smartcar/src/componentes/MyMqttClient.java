@@ -16,12 +16,12 @@ public abstract class MyMqttClient implements MqttCallback {
 	protected String clientId = null;
 	protected String brokerURL = null;
 
-	protected SmartCar smartcar = null;
+	protected Ambulance ambulance = null;
 
 	
-	public MyMqttClient(String clientId, SmartCar smartcar, String MQTTBrokerURL) {
+	public MyMqttClient(String clientId, Ambulance ambulance, String MQTTBrokerURL) {
 		this.clientId = clientId;
-		this.smartcar = smartcar;
+		this.ambulance = ambulance;
 		this.brokerURL = MQTTBrokerURL;
 	}
 
