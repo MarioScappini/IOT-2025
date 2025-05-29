@@ -37,11 +37,11 @@ public class Ambulance extends SmartCar {
             "  \"id\":\""+this.smartCarID+"\",\n" +
             "  \"type\":\"MedicalVehicle\",\n" +
             "  \"timestamp\":\""+formattedNow+"\",\n" +
-            "  \"action\":\"""\",\n" +
+            "  \"action\":\""+this.status+"\",\n" +
             "  \"road\":\"" + this.rp.getRoad().substring(0, 2) + "\",\n" +
             "  \"road-segment\":\"" + this.rp.getRoad() + "\",\n" +
-            "  \"vehicle-id\":\"" + this.smartCarID + "\",\n" +
             "  \"position\":" + this.rp.getKm() + ",\n" +
+            "  \"lane\":" + this.rp.getLane() + ",\n" +
             "}";
 
         this.notifier.publish(topic, payload);
@@ -78,14 +78,12 @@ public class Ambulance extends SmartCar {
             "  \"action\":\"VEHICLE_IN\",\n" +
             "  \"road\":\"" + this.rp.getRoad().substring(0, 2) + "\",\n" +
             "  \"road-segment\":\"" + this.rp.getRoad() + "\",\n" +
-            "  \"vehicle-id\":\"" + this.smartCarID + "\",\n" +
             "  \"position\":" + this.rp.getKm() + ",\n" +
             "}";
 
         this.notifier.publish(topic, payload);
     }
 
-    // Publicar que sale del segmento
     @Override
     public void publishVehicleOut() {
         String topic = "iot/2025/road/"+this.rp.getRoad()+"/traffic";
@@ -97,14 +95,12 @@ public class Ambulance extends SmartCar {
         
         String payload = "{\n" +
             "  \"id\":\""+this.smartCarID+"\",\n" +
-            "  \"type\":\"EMERGENCY\",\n" +
+            "  \"type\":\"MedicalVehicle\",\n" +
             "  \"timestamp\":\""+formattedNow+"\",\n" +
             "  \"action\":\"VEHICLE_OUT\",\n" +
             "  \"road\":\"" + this.rp.getRoad().substring(0, 2) + "\",\n" +
             "  \"road-segment\":\"" + this.rp.getRoad() + "\",\n" +
-            "  \"vehicle-id\":\"" + this.smartCarID + "\",\n" +
             "  \"position\":" + this.rp.getKm() + ",\n" +
-            "  \"role\":\""+this.status+"\"\n" +
             "}";
 
         this.notifier.publish(topic, payload);
