@@ -21,11 +21,9 @@ public class SmartCar_RoadInfoSubscriber extends MyMqttClient {
 
         String trafficTopic = "es/upv/pros/tatami/smartcities/traffic/PTPaterna/road/" + segment + "/traffic";
         String infoTopic = "es/upv/pros/tatami/smartcities/traffic/PTPaterna/road/" + segment + "/info";
-        String ambulanceAlerts = "iot/2025/road/" + segment + "/alerts";
 
         this.subscribe(trafficTopic);
         this.subscribe(infoTopic);
-        this.subscribe(ambulanceAlerts);
     }
 
     @Override
@@ -55,26 +53,6 @@ public class SmartCar_RoadInfoSubscriber extends MyMqttClient {
                 System.out.println("Accidente detectado en el tramo " 
                     + smartcar.getCurrentPlace().getRoad() + "");
             }
-            else if (json.has("action") && json.has("lane") && json.getString("action").equals("EMERGENCY")) {
-                int currentSpeed = smartcar.getRoadCurrentSpeed();
-                int ambulanceLane = json.getInt("lane");
-
-                if (smartcar.getLane() == ambulanceLane){
-                    System.out.println("Cambiando de carril de"+smartcar.getLane());
-                    if((smartcar.getLane()+1)>smartcar.getRoadLanes()){
-                        smartcar.setLane(smartcar.getLane()-1);
-                    }else{
-                        smartcar.setLane(smartcar.getLane()+1);
-                    }
-                    
-                    System.out.println("Cambiamos al carril"+smartcar.getLane());    
-                }
-
-
-                System.out.println("Emergencia en curso");
-                System.out.println("Velocidad actual en la vía: " + currentSpeed + " km/h");
-                System.out.println("Deteniendo vehiculo\n");
-            }
 
         } catch (Exception e) {
             System.err.println("Error procesando mensaje recibido:");
@@ -82,4 +60,3 @@ public class SmartCar_RoadInfoSubscriber extends MyMqttClient {
         }
     }
 }
-

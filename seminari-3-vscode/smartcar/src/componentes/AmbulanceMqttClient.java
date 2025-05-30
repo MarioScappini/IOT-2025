@@ -10,36 +10,19 @@ import org.eclipse.paho.client.mqttv3.persist.MqttDefaultFilePersistence;
 
 import utils.MySimpleLogger;
 
-public abstract class MyMqttClient implements MqttCallback {
+public abstract class AmbulanceMqttClient implements MqttCallback {
 
 	protected MqttClient myClient;
 	protected String clientId = null;
 	protected String brokerURL = null;
 
-	protected SmartCar smartcar = null;
+	protected Ambulance ambulance = null;
 
 	
-	public MyMqttClient(String clientId, SmartCar smartcar, String MQTTBrokerURL) {
+	public AmbulanceMqttClient(String clientId, Ambulance ambulance, String MQTTBrokerURL) {
 		this.clientId = clientId;
-		this.smartcar = smartcar;
+		this.ambulance = ambulance;
 		this.brokerURL = MQTTBrokerURL;
-	}
-
-	public void publish(String topic, String payload) {
-		try {
-			MqttMessage message = new MqttMessage(payload.getBytes());
-			message.setQos(0);
-			message.setRetained(false);
-	
-			myClient.publish(topic, message);
-	
-			MySimpleLogger.trace(this.clientId, "Mensaje publicado en topic: " + topic);
-			MySimpleLogger.trace(this.clientId, payload);
-	
-		} catch (Exception e) {
-			MySimpleLogger.warn(this.clientId, "Error publicando mensaje: " + e.getMessage());
-			e.printStackTrace();
-		}
 	}
 
 

@@ -1,13 +1,7 @@
 package componentes;
 
 import utils.MySimpleLogger;
-
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-
 import org.json.JSONObject;
-
 
 public class SmartCar {
 
@@ -17,7 +11,6 @@ public class SmartCar {
     protected RoadPlace rp = null; // simula la ubicación actual del vehículo
     protected SmartCar_RoadInfoSubscriber subscriber = null;
     protected SmartCar_InicidentNotifier notifier = null;
-    
 
     public SmartCar(String id, String brokerURL) {
         this.setSmartCarID(id);
@@ -72,43 +65,31 @@ public class SmartCar {
 
     // Publicar que entra en un segmento
     public void publishVehicleIn() {
-        String topic = "iot/2025/iotproject/road/"+this.rp.getRoad()+"/traffic";
-        LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String formattedNow = now.format(formatter);;
-
+        String topic = "es/upv/pros/tatami/smartcities/traffic/PTPaterna/road/" + this.rp.getRoad() + "/traffic";
 
         String payload = "{\n" +
-                "  \"id\":\"VEHICLE_OUT\",\n" +
-                "  \"type\":\"TRAFFIC\",\n" +
-                "  \"timestamp\":\""+formattedNow+"\",\n" +
-                "  \"action\":\"VEHICLE_IN\",\n" +
-                "  \"road\":\"" + this.rp.getRoad().substring(0, 2) + "\",\n" +
-                "  \"road-segment\":\"" + this.rp.getRoad() + "\",\n" +
-                "  \"vehicle-id\":\"" + this.smartCarID + "\",\n" +
-                "  \"position\":" + this.rp.getKm() + ",\n" +    
-                "}";
+            "  \"action\":\"VEHICLE_IN\",\n" +
+            "  \"road\":\"" + this.rp.getRoad().substring(0, 2) + "\",\n" +
+            "  \"road-segment\":\"" + this.rp.getRoad() + "\",\n" +
+            "  \"vehicle-id\":\"" + this.smartCarID + "\",\n" +
+            "  \"position\":" + this.rp.getKm() + ",\n" +
+            "  \"role\":\"PrivateUsage\"\n" +
+            "}";
 
         this.notifier.publish(topic, payload);
     }
 
     // Publicar que sale del segmento
     public void publishVehicleOut() {
-        String topic = "iot/2025/iotproject/road/"+this.rp.getRoad()+"/traffic";
-        
-        LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String formattedNow = now.format(formatter);
+        String topic = "es/upv/pros/tatami/smartcities/traffic/PTPaterna/road/" + this.rp.getRoad() + "/traffic";
 
         String payload = "{\n" +
-            "  \"id\":\"VEHICLE_OUT\",\n" +
-            "  \"type\":\"TRAFFIC\",\n" +
-            "  \"timestamp\":\""+formattedNow+"\",\n" +
             "  \"action\":\"VEHICLE_OUT\",\n" +
             "  \"road\":\"" + this.rp.getRoad().substring(0, 2) + "\",\n" +
             "  \"road-segment\":\"" + this.rp.getRoad() + "\",\n" +
             "  \"vehicle-id\":\"" + this.smartCarID + "\",\n" +
-            "  \"position\":" + this.rp.getKm() + ",\n" +    
+            "  \"position\":" + this.rp.getKm() + ",\n" +
+            "  \"role\":\"PrivateUsage\"\n" +
             "}";
 
         this.notifier.publish(topic, payload);
@@ -142,7 +123,7 @@ public class SmartCar {
 
         } catch (Exception e) {
             e.printStackTrace();
-            return 0;
+            return 50;
         }
     }
 }
